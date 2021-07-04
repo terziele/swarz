@@ -1,0 +1,3 @@
+rootProject.name = 'swarz'
+
+include 'swarz-core'
