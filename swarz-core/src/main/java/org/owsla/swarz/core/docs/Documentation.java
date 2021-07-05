@@ -1,5 +1,5 @@
 /* (C)2021 */
-package org.owsla.swarz.core;
+package org.owsla.swarz.core.docs;
 
 import lombok.NonNull;
 
@@ -9,5 +9,10 @@ public interface Documentation {
   String getName();
 
   @NonNull
-  String get();
+  String get() throws RuntimeException;
+
+  enum As {
+    JSON,
+    YAML
+  }
 }
