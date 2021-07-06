@@ -1,12 +1,17 @@
 /* (C)2021 */
 package org.owsla.swarz.core.docs;
 
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
+import io.swagger.v3.core.jackson.ModelResolver;
+import io.swagger.v3.core.util.Json;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.function.Supplier;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.mockito.Mockito;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.webmvc.core.SpringDocWebMvcConfiguration;
@@ -42,6 +47,7 @@ public class SpringDocContext extends GenericWebApplicationContext
 
   public static class Builder {
     @NonNull private ClassLoader classLoader;
+    @NonNull private List<ModelResolver> additionalModelResolvers;
     @NonNull private List<Class<?>> controllers;
     @NonNull private SpringDocConfigProperties springDocProperties;
     @NonNull private Properties additionalProperties;
@@ -49,22 +55,38 @@ public class SpringDocContext extends GenericWebApplicationContext
     public SpringDocContext build() {
       var context = new SpringDocContext();
 
+      context.setClassLoader(classLoader);
       context.register(SpringDocWebMvcConfiguration.class);
       context.register(SpringDocConfiguration.class);
       context.registerBean(
           RequestMappingInfoHandlerMapping.class, requestMappingInfoHandlerMapping());
       context.registerBean(SpringDocConfigProperties.class, () -> springDocProperties);
 
-      //            Json.mapper()
-      //                            .registerModule(new KotlinModule());
+      Json.mapper().registerModule(new KotlinModule());
+
       additionalProperties.setProperty("springdoc.api-docs.enabled", "true");
       var env = context.getEnvironment();
       env.getPropertySources()
           .addFirst(
               new PropertiesPropertySource("swarz-additional-properties", additionalProperties));
 
+      for (var controller : controllers) {
+        context.registerBean(controller, controllerFactory(controller));
+      }
+
+      var resolvers =
+          Objects.requireNonNullElse(additionalModelResolvers, List.<ModelResolver>of());
+      for (var resolver : resolvers) {
+        Supplier<ModelResolver> resolverSupplier = () -> resolver;
+        context.registerBean(resolver.getClass(), resolverSupplier);
+      }
+
       context.refresh();
       return context;
+    }
+
+    private <T> Supplier<T> controllerFactory(Class<T> clazz) {
+      return () -> Mockito.mock(clazz);
     }
 
     private static Supplier<RequestMappingInfoHandlerMapping> requestMappingInfoHandlerMapping() {
