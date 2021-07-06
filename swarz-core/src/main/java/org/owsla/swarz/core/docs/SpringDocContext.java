@@ -52,6 +52,31 @@ public class SpringDocContext extends GenericWebApplicationContext
     @NonNull private SpringDocConfigProperties springDocProperties;
     @NonNull private Properties additionalProperties;
 
+    public Builder classLoader(ClassLoader classLoader) {
+      this.classLoader = classLoader;
+      return this;
+    }
+
+    public Builder additionalModelResolvers(List<ModelResolver> additionalModelResolvers) {
+      this.additionalModelResolvers = additionalModelResolvers;
+      return this;
+    }
+
+    public Builder cetControllers(List<Class<?>> controllers) {
+      this.controllers = controllers;
+      return this;
+    }
+
+    public Builder springDocProperties(SpringDocConfigProperties springDocProperties) {
+      this.springDocProperties = springDocProperties;
+      return this;
+    }
+
+    public Builder additionalProperties(Properties additionalProperties) {
+      this.additionalProperties = additionalProperties;
+      return this;
+    }
+
     public SpringDocContext build() {
       var context = new SpringDocContext();
 
@@ -64,6 +89,7 @@ public class SpringDocContext extends GenericWebApplicationContext
 
       Json.mapper().registerModule(new KotlinModule());
 
+      // SpringDoc configuration is only enabled if we have that property enabled.
       additionalProperties.setProperty("springdoc.api-docs.enabled", "true");
       var env = context.getEnvironment();
       env.getPropertySources()
@@ -71,7 +97,7 @@ public class SpringDocContext extends GenericWebApplicationContext
               new PropertiesPropertySource("swarz-additional-properties", additionalProperties));
 
       for (var controller : controllers) {
-        context.registerBean(controller, controllerFactory(controller));
+        context.registerBean(controller, createController(controller));
       }
 
       var resolvers =
@@ -85,7 +111,7 @@ public class SpringDocContext extends GenericWebApplicationContext
       return context;
     }
 
-    private <T> Supplier<T> controllerFactory(Class<T> clazz) {
+    private <T> Supplier<T> createController(Class<T> clazz) {
       return () -> Mockito.mock(clazz);
     }
 
