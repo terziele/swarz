@@ -62,7 +62,7 @@ public class SpringDocContext extends GenericWebApplicationContext
       return this;
     }
 
-    public Builder cetControllers(List<Class<?>> controllers) {
+    public Builder controllers(List<Class<?>> controllers) {
       this.controllers = controllers;
       return this;
     }
