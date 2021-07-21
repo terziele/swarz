@@ -1,6 +1,8 @@
 /* (C)2021 */
 package org.owsla.swarz.core.docs;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.core.util.Json;
@@ -11,6 +13,7 @@ import java.util.Properties;
 import java.util.function.Supplier;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.mockito.Mockito;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
@@ -46,38 +49,44 @@ public class SpringDocContext extends GenericWebApplicationContext
   }
 
   public static class Builder {
-    @NonNull private ClassLoader classLoader;
-    @NonNull private List<ModelResolver> additionalModelResolvers;
-    @NonNull private List<Class<?>> controllers;
-    @NonNull private SpringDocConfigProperties springDocProperties;
-    @NonNull private Properties additionalProperties;
+    @NotNull private ClassLoader classLoader;
+    @NotNull private List<ModelResolver> additionalModelResolvers;
+    @NotNull private List<Class<?>> controllers;
+    @NotNull private SpringDocConfigProperties springDocProperties;
+    @NotNull private Properties additionalProperties;
 
-    public Builder classLoader(ClassLoader classLoader) {
+    public Builder classLoader(@NonNull ClassLoader classLoader) {
       this.classLoader = classLoader;
       return this;
     }
 
-    public Builder additionalModelResolvers(List<ModelResolver> additionalModelResolvers) {
+    public Builder additionalModelResolvers(@NonNull List<ModelResolver> additionalModelResolvers) {
       this.additionalModelResolvers = additionalModelResolvers;
       return this;
     }
 
-    public Builder controllers(List<Class<?>> controllers) {
+    public Builder controllers(@NonNull List<Class<?>> controllers) {
       this.controllers = controllers;
       return this;
     }
 
-    public Builder springDocProperties(SpringDocConfigProperties springDocProperties) {
+    public Builder springDocProperties(@NonNull SpringDocConfigProperties springDocProperties) {
       this.springDocProperties = springDocProperties;
       return this;
     }
 
-    public Builder additionalProperties(Properties additionalProperties) {
+    public Builder additionalProperties(@NonNull Properties additionalProperties) {
       this.additionalProperties = additionalProperties;
       return this;
     }
 
     public SpringDocContext build() {
+      notNull(classLoader, "class loader");
+      notNull(additionalModelResolvers, "additional model resolvers");
+      notNull(controllers, "controllers");
+      notNull(springDocProperties, "springdoc properties");
+      notNull(additionalProperties, "additional properties");
+
       var context = new SpringDocContext();
 
       context.setClassLoader(classLoader);

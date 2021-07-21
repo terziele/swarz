@@ -23,7 +23,11 @@ public class ConcreteClassControllerScanner extends AbstractControllerScanner {
       return Set.of();
     }
     try {
-      return Set.of(Class.forName(source, false, super.classLoader));
+      var found = Class.forName(source, false, super.classLoader);
+      if (isController(found)) {
+        return Set.of(found);
+      }
+      log.debug("{} is not a controller class", source);
     } catch (ClassNotFoundException e) {
       log.error("Failed to load controller: {}", source, e);
     }
