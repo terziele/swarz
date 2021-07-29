@@ -1,0 +1,34 @@
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+gradlePlugin {
+    plugins {
+        swarzOpenApiPlugin {
+            id = "swarz-openapi-plugin"
+            implementationClass = 'org.owsla.swarz.plugin.SwarzOpenApiPlugin'
+            description = "Swarz OpenAPI 3 documentation generator plugin"
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    implementation project(":swarz-core")
+
+    implementation gradleApi()
+    implementation localGroovy()
+
+    testImplementation gradleTestKit()
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}

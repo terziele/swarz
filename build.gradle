@@ -14,6 +14,7 @@ allprojects {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 configure(subprojects) {
@@ -39,6 +40,10 @@ configure(subprojects) {
     spotless {
         java {
             googleJavaFormat()
+            licenseHeader '/* (C)$YEAR */' // or licenseHeaderFile
+        }
+        groovy {
+            greclipse()
             licenseHeader '/* (C)$YEAR */' // or licenseHeaderFile
         }
         groovyGradle {

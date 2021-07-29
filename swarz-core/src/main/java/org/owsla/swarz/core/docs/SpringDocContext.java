@@ -6,10 +6,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.core.util.Json;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Properties;
+import java.util.*;
 import java.util.function.Supplier;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +47,7 @@ public class SpringDocContext extends GenericWebApplicationContext
 
   public static class Builder {
     @NotNull private ClassLoader classLoader;
-    @NotNull private List<ModelResolver> additionalModelResolvers;
+    @NotNull private List<ModelResolver> additionalModelResolvers = new ArrayList<>();
     @NotNull private List<Class<?>> controllers;
     @NotNull private SpringDocConfigProperties springDocProperties;
     @NotNull private Properties additionalProperties;
@@ -61,7 +58,7 @@ public class SpringDocContext extends GenericWebApplicationContext
     }
 
     public Builder additionalModelResolvers(@NonNull List<ModelResolver> additionalModelResolvers) {
-      this.additionalModelResolvers = additionalModelResolvers;
+      this.additionalModelResolvers.addAll(additionalModelResolvers);
       return this;
     }
 

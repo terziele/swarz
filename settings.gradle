@@ -1,3 +1,4 @@
 rootProject.name = 'swarz'
 
 include 'swarz-core'
+include 'swarz-gradle-plugin'
