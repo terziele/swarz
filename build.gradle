@@ -42,10 +42,6 @@ configure(subprojects) {
             googleJavaFormat()
             licenseHeader '/* (C)$YEAR */' // or licenseHeaderFile
         }
-        groovy {
-            greclipse()
-            licenseHeader '/* (C)$YEAR */' // or licenseHeaderFile
-        }
         groovyGradle {
             target '*.gradle' // default target for kotlinGradle
         }

@@ -1,12 +1,14 @@
 /* (C)2021 */
 package org.owsla.swarz.core.docs;
 
+import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.webmvc.api.OpenApiResource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+@Builder
 @RequiredArgsConstructor
 public class SpringDocDocumentation implements Documentation {
   @NonNull private final String name;

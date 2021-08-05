@@ -10,6 +10,10 @@ class SwarzExtension {
 	private final Project project
 	private final List<ApiExtension> apis = new ArrayList<>()
 
+	List<ApiExtension> getApis() {
+		return apis.clone();
+	}
+
 	void api(Closure<ApiExtension> apiExtensionClosure) {
 		apis.add(project.configure(new ApiExtension(project), apiExtensionClosure) as ApiExtension)
 	}

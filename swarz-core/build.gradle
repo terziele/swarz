@@ -1,3 +1,6 @@
+plugins {
+    id 'java-library'
+}
 dependencies {
     annotationProcessor "org.projectlombok:lombok:1.18.20"
     compileOnly "org.projectlombok:lombok:1.18.20"
@@ -11,11 +14,11 @@ dependencies {
     implementation("org.springframework:spring-webflux:5.2.8.RELEASE")
     implementation("org.springframework:spring-webmvc:5.2.8.RELEASE")
 
-    implementation("org.springdoc:springdoc-openapi-ui:1.5.9") {
+    api("org.springdoc:springdoc-openapi-ui:1.5.9") {
         exclude(group: "org.springframework", module: "spring-web")
         exclude(group: "org.springframework", module: "spring-webmvc")
     }
-    implementation("org.springdoc:springdoc-openapi-webmvc-core:1.5.9") {
+    api("org.springdoc:springdoc-openapi-webmvc-core:1.5.9") {
         exclude(group: "org.springframework", module: "spring-web")
         exclude(group: "org.springframework", module: "spring-webmvc")
     }
@@ -26,5 +29,4 @@ dependencies {
 
     testAnnotationProcessor "org.projectlombok:lombok:1.18.20"
     testCompileOnly "org.projectlombok:lombok:1.18.20"
-
 }
