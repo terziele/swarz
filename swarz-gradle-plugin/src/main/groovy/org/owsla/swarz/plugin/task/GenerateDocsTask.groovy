@@ -4,6 +4,7 @@ package org.owsla.swarz.plugin.task
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.TaskAction
+import org.owsla.swarz.core.FileDocumentationStorage
 import org.owsla.swarz.core.Swarz
 import org.owsla.swarz.core.controller.CompositeControllerScanner
 import org.owsla.swarz.core.controller.ConcreteClassControllerScanner
@@ -56,13 +57,11 @@ class GenerateDocsTask extends DefaultTask {
 					.build()
 
 			logger.debug("Configuring storage")
-			//todo
-			def storage = null
+			def storage = FileDocumentationStorage.of(api.outputPath)
 
 			def swarz = Swarz.builder()
 					.docs(docs)
 					.storage(storage)
-					.documentationFilename(api.filename)
 					.build()
 
 			try {

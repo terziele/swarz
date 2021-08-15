@@ -25,20 +25,12 @@ class ApiExtension {
 		this.name = name
 	}
 
-	String getOutputDir() {
-		return outputDir
-	}
-
-	void setOutputDir(String outputDir) {
-		this.outputDir = outputDir
-	}
-
-	String getFilename() {
+	String getOutputPath() {
 		return outputPath
 	}
 
-	void setFilename(String filename) {
-		this.outputPath = filename
+	void setOutputPath(String outputPath) {
+		this.outputPath = outputPath
 	}
 
 	Set<String> getControllersLocations() {
