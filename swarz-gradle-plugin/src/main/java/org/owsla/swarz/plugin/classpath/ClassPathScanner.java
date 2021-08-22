@@ -11,6 +11,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ConfigurationContainer;
@@ -65,7 +67,7 @@ public final class ClassPathScanner {
       try {
         return file.toURI().toURL();
       } catch (MalformedURLException e) {
-        throw new RuntimeException(e);
+        throw new GradleException("Unable to convert file to URL",e);
       }
     };
   }
