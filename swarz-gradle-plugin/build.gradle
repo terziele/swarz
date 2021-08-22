@@ -27,10 +27,15 @@ pluginBundle {
 	plugins {
 		swarzOpenApiPlugin {
 			displayName = "Swarz OAS3 documentation plugin"
-			tags = ['swagger', 'documentation', 'openapi', 'spring', 'spring boot' ]
+			tags = [
+				'swagger',
+				'documentation',
+				'openapi',
+				'spring',
+				'spring boot'
+			]
 		}
 	}
-
 }
 
 test {
