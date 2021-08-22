@@ -32,7 +32,6 @@ public class FileDocumentationStorage implements DocumentationStorage {
   @SneakyThrows
   public static FileDocumentationStorage of(@NonNull String outputFilePath) {
     var path = Paths.get(outputFilePath);
-    var fileName = path.getFileName();
 
     var parentDir = path.getParent().toFile();
     if (!parentDir.exists()) {
