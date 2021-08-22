@@ -20,11 +20,11 @@ public class Swarz {
     log.info("Generating OpenAPI documentation.");
     var start = System.currentTimeMillis();
     var generated = docs.get();
-    log.info("Documentation generation completed in {}", System.currentTimeMillis() - start);
+    log.info("Documentation generation completed in {}ms", System.currentTimeMillis() - start);
 
     log.info("Saving documentation '{}' to storage.", docs.getName());
     start = System.currentTimeMillis();
     storage.save(generated);
-    log.info("Documentation saving completed in {}", System.currentTimeMillis() - start);
+    log.info("Documentation saving completed in {}ms", System.currentTimeMillis() - start);
   }
 }

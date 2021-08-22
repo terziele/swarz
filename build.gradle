@@ -36,13 +36,13 @@ configure(subprojects) {
         mavenCentral()
     }
 
-
     spotless {
         java {
             googleJavaFormat()
             licenseHeader '/* (C)$YEAR */' // or licenseHeaderFile
         }
         groovyGradle {
+            greclipse()
             target '*.gradle' // default target for kotlinGradle
         }
     }

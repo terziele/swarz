@@ -62,8 +62,8 @@ public class SpringDocContext extends GenericWebApplicationContext
       return this;
     }
 
-    public Builder controllers(@NonNull List<Class<?>> controllers) {
-      this.controllers = controllers;
+    public Builder controllers(@NonNull Collection<Class<?>> controllers) {
+      this.controllers = List.copyOf(controllers);
       return this;
     }
 
@@ -103,22 +103,39 @@ public class SpringDocContext extends GenericWebApplicationContext
               new PropertiesPropertySource("swarz-additional-properties", additionalProperties));
 
       for (var controller : controllers) {
-        context.registerBean(controller, createController(controller));
+        // using the anonymous Supplier class
+        // because when using lambda or returned value from method
+        // java uses wrong overloaded registerBean method and think that it's a
+        // BeanDefinitionCustomizer.
+        context.registerBean(
+            controller,
+            new Supplier() {
+              @Override
+              public Object get() {
+                return Mockito.mock(controller);
+              }
+            });
       }
 
       var resolvers =
           Objects.requireNonNullElse(additionalModelResolvers, List.<ModelResolver>of());
       for (var resolver : resolvers) {
-        Supplier<ModelResolver> resolverSupplier = () -> resolver;
-        context.registerBean(resolver.getClass(), resolverSupplier);
+        // using the anonymous Supplier class
+        // because when using lambda or returned value from method
+        // java uses wrong overloaded registerBean method and think that it's a
+        // BeanDefinitionCustomizer.
+        context.registerBean(
+            resolver.getClass(),
+            new Supplier<ModelResolver>() {
+              @Override
+              public ModelResolver get() {
+                return resolver;
+              }
+            });
       }
 
       context.refresh();
       return context;
-    }
-
-    private <T> Supplier<T> createController(Class<T> clazz) {
-      return () -> Mockito.mock(clazz);
     }
 
     private static Supplier<RequestMappingInfoHandlerMapping> requestMappingInfoHandlerMapping() {

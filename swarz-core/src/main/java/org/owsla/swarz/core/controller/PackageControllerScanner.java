@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PackageControllerScanner extends AbstractControllerScanner {
 
   private static final Pattern PACKAGE_PATTERN =
-      Pattern.compile("([a-z0-9]*\\.)+([A-Z0-9]\\w*\\$?){0}");
+      Pattern.compile("^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+[0-9a-z_]$");
 
   private final ClassPath classPath;
 
