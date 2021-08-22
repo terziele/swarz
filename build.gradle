@@ -8,8 +8,8 @@ plugins {
 }
 
 allprojects {
-    group 'org.owsla'
-    version '1.0-SNAPSHOT'
+    group 'org.owsla.swarz'
+    version '0.1.0'
 }
 
 repositories {

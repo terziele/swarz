@@ -1,6 +1,7 @@
 plugins {
 	id 'java'
 	id 'java-gradle-plugin'
+	id "com.gradle.plugin-publish" version "0.15.0"
 }
 
 repositories {
@@ -11,11 +12,25 @@ repositories {
 gradlePlugin {
 	plugins {
 		swarzOpenApiPlugin {
-			id = "swarz-openapi-plugin"
+			id = "com.github.terziele.swarz-openapi-plugin"
 			implementationClass = 'org.owsla.swarz.plugin.SwarzOpenApiPlugin'
-			description = "Swarz OpenAPI 3 documentation generator plugin"
+			description = "Swarz. OpenAPI 3 documentation generator plugin"
 		}
 	}
+}
+
+pluginBundle {
+	website = "https://github.com/terziele/swarz.git"
+	vcsUrl = "https://github.com/terziele/swarz.git"
+	description = "Yet another OpenAPI3 documentation generator for Spring"
+
+	plugins {
+		swarzOpenApiPlugin {
+			displayName = "Swarz OAS3 documentation plugin"
+			tags = ['swagger', 'documentation', 'openapi', 'spring', 'spring boot' ]
+		}
+	}
+
 }
 
 test {
