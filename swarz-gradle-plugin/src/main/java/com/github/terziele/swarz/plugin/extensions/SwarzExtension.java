@@ -1,5 +1,5 @@
 /* (C)2021 */
-package org.owsla.swarz.plugin.extensions;
+package com.github.terziele.swarz.plugin.extensions;
 
 import groovy.lang.Closure;
 import java.util.ArrayList;

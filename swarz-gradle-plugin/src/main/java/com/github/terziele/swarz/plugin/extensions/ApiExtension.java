@@ -1,5 +1,5 @@
 /* (C)2021 */
-package org.owsla.swarz.plugin.extensions;
+package com.github.terziele.swarz.plugin.extensions;
 
 import java.util.HashSet;
 import java.util.Set;

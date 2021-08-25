@@ -1,11 +1,11 @@
 /* (C)2021 */
-package org.owsla.swarz.plugin;
+package com.github.terziele.swarz.plugin;
 
+import com.github.terziele.swarz.plugin.extensions.SwarzExtension;
+import com.github.terziele.swarz.plugin.task.GenerateOpenApiDocumentationTask;
 import java.util.Map;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.owsla.swarz.plugin.extensions.SwarzExtension;
-import org.owsla.swarz.plugin.task.GenerateOpenApiDocumentationTask;
 
 public class SwarzOpenApiPlugin implements Plugin<Project> {
   @Override

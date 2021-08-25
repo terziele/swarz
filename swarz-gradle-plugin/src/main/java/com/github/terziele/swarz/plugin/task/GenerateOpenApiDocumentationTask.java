@@ -1,6 +1,9 @@
 /* (C)2021 */
-package org.owsla.swarz.plugin.task;
+package com.github.terziele.swarz.plugin.task;
 
+import com.github.terziele.swarz.plugin.classpath.ClassPathScanner;
+import com.github.terziele.swarz.plugin.extensions.ApiExtension;
+import com.github.terziele.swarz.plugin.extensions.SwarzExtension;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
@@ -18,9 +21,6 @@ import org.owsla.swarz.core.controller.PackageControllerScanner;
 import org.owsla.swarz.core.docs.Documentation;
 import org.owsla.swarz.core.docs.SpringDocContext;
 import org.owsla.swarz.core.docs.SpringDocDocumentation;
-import org.owsla.swarz.plugin.classpath.ClassPathScanner;
-import org.owsla.swarz.plugin.extensions.ApiExtension;
-import org.owsla.swarz.plugin.extensions.SwarzExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.SpringDocConfigProperties;

@@ -47,7 +47,7 @@ public class SpringDocContext extends GenericWebApplicationContext
 
   public static class Builder {
     @NotNull private ClassLoader classLoader;
-    @NotNull private List<ModelResolver> additionalModelResolvers = new ArrayList<>();
+    private final List<ModelResolver> additionalModelResolvers = new ArrayList<>();
     @NotNull private List<Class<?>> controllers;
     @NotNull private SpringDocConfigProperties springDocProperties;
     @NotNull private Properties additionalProperties;

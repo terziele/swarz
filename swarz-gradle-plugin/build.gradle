@@ -13,7 +13,7 @@ gradlePlugin {
 	plugins {
 		swarzOpenApiPlugin {
 			id = "com.github.terziele.swarz-openapi-plugin"
-			implementationClass = 'org.owsla.swarz.plugin.SwarzOpenApiPlugin'
+			implementationClass = 'com.github.terziele.swarz.plugin.SwarzOpenApiPlugin'
 			description = "Swarz. OpenAPI 3 documentation generator plugin"
 		}
 	}
@@ -35,6 +35,12 @@ pluginBundle {
 				'spring boot'
 			]
 		}
+	}
+
+	mavenCoordinates {
+		groupId = "com.github.terziele"
+		artifactId = "swarz-openapi-plugin"
+		version = project.version
 	}
 }
 
