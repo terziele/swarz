@@ -1,13 +1,13 @@
 /* (C)2021 */
-package org.owsla.swarz.core.controller;
+package com.github.terziele.swarz.core.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.github.terziele.swarz.core.controller.fixtures.SimpleClass;
+import com.github.terziele.swarz.core.controller.fixtures.SimpleController;
 import java.util.Set;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import org.owsla.swarz.core.controller.fixtures.SimpleClass;
-import org.owsla.swarz.core.controller.fixtures.SimpleController;
 import org.springframework.web.bind.annotation.RestController;
 
 class ConcreteClassControllerScannerTest {

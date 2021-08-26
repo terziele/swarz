@@ -1,5 +1,5 @@
 /* (C)2021 */
-package org.owsla.swarz.core.controller;
+package com.github.terziele.swarz.core.controller;
 
 import java.lang.annotation.Annotation;
 import lombok.NonNull;

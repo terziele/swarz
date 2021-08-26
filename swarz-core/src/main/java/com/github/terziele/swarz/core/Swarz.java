@@ -1,12 +1,12 @@
 /* (C)2021 */
-package org.owsla.swarz.core;
+package com.github.terziele.swarz.core;
 
+import com.github.terziele.swarz.core.docs.Documentation;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.owsla.swarz.core.docs.Documentation;
 
 @Slf4j
 @Builder

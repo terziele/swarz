@@ -1,12 +1,12 @@
 /* (C)2021 */
-package org.owsla.swarz.core.controller;
+package com.github.terziele.swarz.core.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.github.terziele.swarz.core.controller.fixtures.SimpleController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.owsla.swarz.core.controller.fixtures.SimpleController;
 
 class PackageControllerScannerTest {
 

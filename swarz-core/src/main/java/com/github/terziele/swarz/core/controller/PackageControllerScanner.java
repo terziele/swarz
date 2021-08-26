@@ -1,5 +1,5 @@
 /* (C)2021 */
-package org.owsla.swarz.core.controller;
+package com.github.terziele.swarz.core.controller;
 
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;

@@ -1,5 +1,5 @@
 /* (C)2021 */
-package org.owsla.swarz.core.docs;
+package com.github.terziele.swarz.core.docs;
 
 import lombok.NonNull;
 

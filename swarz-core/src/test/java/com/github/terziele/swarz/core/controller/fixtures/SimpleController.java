@@ -1,5 +1,5 @@
 /* (C)2021 */
-package org.owsla.swarz.core.controller.fixtures;
+package com.github.terziele.swarz.core.controller.fixtures;
 
 import org.springframework.web.bind.annotation.RestController;
 

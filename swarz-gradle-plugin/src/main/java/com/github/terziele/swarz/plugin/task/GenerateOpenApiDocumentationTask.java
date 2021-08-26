@@ -1,6 +1,14 @@
 /* (C)2021 */
 package com.github.terziele.swarz.plugin.task;
 
+import com.github.terziele.swarz.core.FileDocumentationStorage;
+import com.github.terziele.swarz.core.Swarz;
+import com.github.terziele.swarz.core.controller.CompositeControllerScanner;
+import com.github.terziele.swarz.core.controller.ConcreteClassControllerScanner;
+import com.github.terziele.swarz.core.controller.PackageControllerScanner;
+import com.github.terziele.swarz.core.docs.Documentation;
+import com.github.terziele.swarz.core.docs.SpringDocContext;
+import com.github.terziele.swarz.core.docs.SpringDocDocumentation;
 import com.github.terziele.swarz.plugin.classpath.ClassPathScanner;
 import com.github.terziele.swarz.plugin.extensions.ApiExtension;
 import com.github.terziele.swarz.plugin.extensions.SwarzExtension;
@@ -13,14 +21,6 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 import org.gradle.api.tasks.TaskAction;
-import org.owsla.swarz.core.FileDocumentationStorage;
-import org.owsla.swarz.core.Swarz;
-import org.owsla.swarz.core.controller.CompositeControllerScanner;
-import org.owsla.swarz.core.controller.ConcreteClassControllerScanner;
-import org.owsla.swarz.core.controller.PackageControllerScanner;
-import org.owsla.swarz.core.docs.Documentation;
-import org.owsla.swarz.core.docs.SpringDocContext;
-import org.owsla.swarz.core.docs.SpringDocDocumentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.SpringDocConfigProperties;

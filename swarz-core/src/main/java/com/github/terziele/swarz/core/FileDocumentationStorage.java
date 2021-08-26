@@ -1,5 +1,5 @@
 /* (C)2021 */
-package org.owsla.swarz.core;
+package com.github.terziele.swarz.core;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
