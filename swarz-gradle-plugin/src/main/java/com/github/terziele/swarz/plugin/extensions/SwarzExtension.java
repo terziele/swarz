@@ -4,7 +4,6 @@ package com.github.terziele.swarz.plugin.extensions;
 import groovy.lang.Closure;
 import java.util.ArrayList;
 import java.util.List;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.gradle.api.Project;
 
 public class SwarzExtension {
@@ -21,9 +20,8 @@ public class SwarzExtension {
   }
 
   public void api(Closure<ApiExtension> apiExtensionClosure) {
-    apis.add(
-        DefaultGroovyMethods.asType(
-            project.configure(new ApiExtension(project), apiExtensionClosure), ApiExtension.class));
+    var api = (ApiExtension) project.configure(new ApiExtension(project), apiExtensionClosure);
+    apis.add(api);
   }
 
   public void setApis(List<ApiExtension> apis) {
