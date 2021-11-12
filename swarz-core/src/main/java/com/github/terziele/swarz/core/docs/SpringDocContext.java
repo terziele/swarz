@@ -127,11 +127,11 @@ public class SpringDocContext extends GenericWebApplicationContext
       }
 
       var resolvers =
-          Objects.requireNonNullElse(additionalModelResolvers, List.<Class<ModelResolver>>of());
+          Objects.requireNonNullElse(additionalModelResolvers, List.<ModelResolver>of());
 
       log.debug("Register additional ModelResolvers: {}", resolvers);
       for (var resolver : resolvers) {
-        beanFactory.registerSingleton(resolver.getClass().getCanonicalName(), resolver);
+        context.registerBean(resolver.getClass(), new Object[0]);
       }
 
       context.refresh();
