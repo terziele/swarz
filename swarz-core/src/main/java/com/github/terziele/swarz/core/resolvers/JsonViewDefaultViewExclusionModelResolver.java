@@ -53,9 +53,10 @@ public class JsonViewDefaultViewExclusionModelResolver extends ModelResolver {
 
     if (presentingViews.isEmpty()) {
       log.debug(
-          "Property '{}#{}'. No JsonView found but expected. Hiding...",
+          "Property '{}#{}'. No JsonView found but expected {}. Hiding...",
           type.getType().getTypeName(),
-          type.getPropertyName());
+          type.getPropertyName(),
+          type.getJsonViewAnnotation().value());
       return true;
     }
 
