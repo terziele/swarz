@@ -12,7 +12,7 @@ public class ApiExtension {
   private String outputPath;
   private Set<String> controllersLocations = new HashSet<>();
   private String version;
-  private boolean jsonViewExclusion = true;
+  private boolean defaultJsonViewExclusion = true;
 
   public ApiExtension(Project project) {
     this.project = project;
@@ -26,12 +26,12 @@ public class ApiExtension {
     this.name = name;
   }
 
-  public boolean getJsonViewExclusion() {
-    return jsonViewExclusion;
+  public boolean getDefaultJsonViewExclusion() {
+    return defaultJsonViewExclusion;
   }
 
-  public void jsonViewExclusion(boolean jsonViewExclusion) {
-    this.jsonViewExclusion = jsonViewExclusion;
+  public void setDefaultJsonViewExclusion(boolean jsonViewExclusion) {
+    this.defaultJsonViewExclusion = jsonViewExclusion;
   }
 
   public String getOutputPath() {
