@@ -67,6 +67,8 @@ public class GenerateOpenApiDocumentationTask extends DefaultTask {
     LOGGER.debug("Building Spring application context");
     var context =
         SpringDocContext.builder()
+            .apiName(api.getName())
+            .version(api.getVersion())
             .additionalModelResolvers(additionalModelResolvers)
             .classLoader(classLoader)
             .additionalProperties(new Properties())
@@ -125,6 +127,6 @@ public class GenerateOpenApiDocumentationTask extends DefaultTask {
         + '-'
         + version
         + '.'
-        + api.getExtension();
+        + api.getFormat();
   }
 }

@@ -4,6 +4,7 @@ package com.github.terziele.swarz.core.docs;
 import static org.apache.commons.lang3.Validate.notNull;
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
+import com.github.terziele.swarz.core.custom.ApiVersionCustomizer;
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.core.util.Json;
 import java.util.*;
@@ -51,6 +52,18 @@ public class SpringDocContext extends GenericWebApplicationContext
     @NotNull private List<Class<?>> controllers;
     @NotNull private SpringDocConfigProperties springDocProperties;
     @NotNull private Properties additionalProperties;
+    @NotNull private String version;
+    @NotNull private String apiName;
+
+    public Builder version(@NonNull String version) {
+      this.version = version;
+      return this;
+    }
+
+    public Builder apiName(@NonNull String apiName) {
+      this.apiName = apiName;
+      return this;
+    }
 
     public Builder classLoader(@NonNull ClassLoader classLoader) {
       this.classLoader = classLoader;
@@ -92,6 +105,10 @@ public class SpringDocContext extends GenericWebApplicationContext
       context.registerBean(
           RequestMappingInfoHandlerMapping.class, requestMappingInfoHandlerMapping());
       context.registerBean(SpringDocConfigProperties.class, () -> springDocProperties);
+
+      log.debug("Customize OpenAPI with API name: {}, and API version: {}", apiName, version);
+      context.registerBean(
+          ApiVersionCustomizer.class, () -> new ApiVersionCustomizer(apiName, version));
 
       Json.mapper().registerModule(new KotlinModule());
 

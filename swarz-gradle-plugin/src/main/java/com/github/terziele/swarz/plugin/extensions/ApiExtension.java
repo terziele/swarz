@@ -8,7 +8,7 @@ import org.gradle.api.Project;
 public class ApiExtension {
   private final Project project;
   private String name;
-  private String extension = "json";
+  private String format = "json";
   private String outputPath;
   private Set<String> controllersLocations = new HashSet<>();
   private String version;
@@ -58,11 +58,11 @@ public class ApiExtension {
     this.version = version;
   }
 
-  public String getExtension() {
-    return extension;
+  public String getFormat() {
+    return format;
   }
 
-  public void setExtension(String extension) {
-    this.extension = extension;
+  public void setFormat(String format) {
+    this.format = format;
   }
 }
