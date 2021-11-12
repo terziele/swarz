@@ -9,9 +9,12 @@ import com.github.terziele.swarz.core.controller.PackageControllerScanner;
 import com.github.terziele.swarz.core.docs.Documentation;
 import com.github.terziele.swarz.core.docs.SpringDocContext;
 import com.github.terziele.swarz.core.docs.SpringDocDocumentation;
+import com.github.terziele.swarz.core.resolvers.JsonViewDefaultViewExclusionModelResolver;
 import com.github.terziele.swarz.plugin.classpath.ClassPathScanner;
 import com.github.terziele.swarz.plugin.extensions.ApiExtension;
 import com.github.terziele.swarz.plugin.extensions.SwarzExtension;
+import io.swagger.v3.core.jackson.ModelResolver;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
@@ -56,10 +59,15 @@ public class GenerateOpenApiDocumentationTask extends DefaultTask {
             .collect(Collectors.toUnmodifiableSet());
     LOGGER.debug("{} controllers were found", controllers.size());
 
+    var additionalModelResolvers = new ArrayList<ModelResolver>();
+    if (api.getDefaultJsonViewExclusion()) {
+      additionalModelResolvers.add(new JsonViewDefaultViewExclusionModelResolver());
+    }
+
     LOGGER.debug("Building Spring application context");
     var context =
         SpringDocContext.builder()
-            .additionalModelResolvers(List.of())
+            .additionalModelResolvers(additionalModelResolvers)
             .classLoader(classLoader)
             .additionalProperties(new Properties())
             .controllers(controllers)
