@@ -102,36 +102,19 @@ public class SpringDocContext extends GenericWebApplicationContext
           .addFirst(
               new PropertiesPropertySource("swarz-additional-properties", additionalProperties));
 
+      var beanFactory = context.getBeanFactory();
+
+      log.debug("Register controllers: {}", controllers);
       for (var controller : controllers) {
-        // using the anonymous Supplier class
-        // because when using lambda or returned value from method
-        // java uses wrong overloaded registerBean method and think that it's a
-        // BeanDefinitionCustomizer.
-        context.registerBean(
-            controller,
-            new Supplier() {
-              @Override
-              public Object get() {
-                return Mockito.mock(controller);
-              }
-            });
+        beanFactory.registerSingleton(controller.getCanonicalName(), Mockito.mock(controller));
       }
 
       var resolvers =
-          Objects.requireNonNullElse(additionalModelResolvers, List.<ModelResolver>of());
+          Objects.requireNonNullElse(additionalModelResolvers, List.<Class<ModelResolver>>of());
+
+      log.debug("Register additional ModelResolvers: {}", resolvers);
       for (var resolver : resolvers) {
-        // using the anonymous Supplier class
-        // because when using lambda or returned value from method
-        // java uses wrong overloaded registerBean method and think that it's a
-        // BeanDefinitionCustomizer.
-        context.registerBean(
-            resolver.getClass(),
-            new Supplier<ModelResolver>() {
-              @Override
-              public ModelResolver get() {
-                return resolver;
-              }
-            });
+        beanFactory.registerSingleton(resolver.getClass().getCanonicalName(), resolver);
       }
 
       context.refresh();

@@ -5,6 +5,7 @@ plugins {
     id 'base'
     id 'jacoco'
     id "com.diffplug.spotless" version "5.12.5"
+    id 'maven-publish'
 }
 
 allprojects {
@@ -21,8 +22,14 @@ configure(subprojects) {
     apply plugin: 'jacoco'
     apply plugin: 'java'
     apply plugin: 'com.diffplug.spotless'
+    apply plugin: 'maven-publish'
+
     sourceCompatibility = VERSION_11
     targetCompatibility = VERSION_11
+
+    java {
+        withSourcesJar()
+    }
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
@@ -35,6 +42,20 @@ configure(subprojects) {
     repositories {
         mavenCentral()
     }
+
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = project.group
+                artifactId = project.name
+                version = project.version
+
+                from components.java
+            }
+        }
+    }
+
 
     spotless {
         java {

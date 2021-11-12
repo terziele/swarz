@@ -26,12 +26,17 @@ public class JsonViewDefaultViewExclusionModelResolver extends ModelResolver {
 
   @Override
   protected boolean hiddenByJsonView(Annotation[] annotations, AnnotatedType type) {
-    if (type == null || type.getJsonViewAnnotation() == null) {
-      log.debug("Type '{}' doesn't have any JsonView. Skipping property filtration.", type);
+    if (type == null) {
+      log.debug("Passed type is null. Skipping property filtration");
+      return false;
+    }
+    if (type.getJsonViewAnnotation() == null) {
+      log.debug(
+          "Type '{}' doesn't have any JsonView. Skipping property filtration.", type.getName());
       return false;
     }
 
-    var expectedViews =
+    var presentingViews =
         Optional.ofNullable(annotations).stream()
             .flatMap(Arrays::stream)
             .filter(JsonView.class::isInstance)
@@ -42,37 +47,35 @@ public class JsonViewDefaultViewExclusionModelResolver extends ModelResolver {
 
     log.debug(
         "Property '{}#{}'. Expecting JsonViews: {}",
-        type.getName(),
+        type.getType().getTypeName(),
         type.getPropertyName(),
-        expectedViews);
+        presentingViews);
 
-    if (expectedViews.isEmpty()) {
-      // if there are no json view specified, then hide it
+    if (presentingViews.isEmpty()) {
       log.debug(
-          "Property '{}#{}' is expected to have some JsonView, but there is none. Hiding it.",
-          type.getName(),
+          "Property '{}#{}'. No JsonView found but expected. Hiding...",
+          type.getType().getTypeName(),
           type.getPropertyName());
       return true;
     }
 
-    for (var presentingView : type.getJsonViewAnnotation().value()) {
-      for (var expectedView : expectedViews) {
+    for (var expected : type.getJsonViewAnnotation().value()) {
+      for (var presentView : presentingViews) {
         // check if presenting view matches to expected
-        if (presentingView.equals(expectedView) || presentingView.isAssignableFrom(expectedView)) {
+        if (expected.equals(presentView) || presentView.isAssignableFrom(expected)) {
           log.debug(
               "Property '{}#{}' has expected JsonView: {}",
-              type.getName(),
+              type.getType().getTypeName(),
               type.getPropertyName(),
-              expectedView);
+              presentView);
           return false;
         }
       }
     }
 
     log.debug(
-        "Property '{}#{}' does not match to any expected views.",
-        type.getName(),
-        type.getPropertyName());
+        "Property '{}' does not match to any expected views. Hiding it.",
+        type.getType().getTypeName());
     return true;
   }
 }
