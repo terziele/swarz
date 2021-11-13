@@ -19,12 +19,12 @@ public class SwarzExtension {
     return List.copyOf(apis);
   }
 
+  public void setApis(List<ApiExtension> apis) {
+    this.apis = apis;
+  }
+
   public void api(Closure<ApiExtension> apiExtensionClosure) {
     var api = (ApiExtension) project.configure(new ApiExtension(project), apiExtensionClosure);
     apis.add(api);
-  }
-
-  public void setApis(List<ApiExtension> apis) {
-    this.apis = apis;
   }
 }

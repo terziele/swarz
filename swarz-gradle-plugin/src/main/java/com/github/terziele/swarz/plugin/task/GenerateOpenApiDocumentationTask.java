@@ -14,10 +14,7 @@ import com.github.terziele.swarz.plugin.classpath.ClassPathScanner;
 import com.github.terziele.swarz.plugin.extensions.ApiExtension;
 import com.github.terziele.swarz.plugin.extensions.SwarzExtension;
 import io.swagger.v3.core.jackson.ModelResolver;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.DefaultTask;
@@ -26,7 +23,6 @@ import org.gradle.api.Project;
 import org.gradle.api.tasks.TaskAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.SpringDocConfigProperties;
 
 public class GenerateOpenApiDocumentationTask extends DefaultTask {
   private static final Logger LOGGER =
@@ -50,38 +46,23 @@ public class GenerateOpenApiDocumentationTask extends DefaultTask {
     LOGGER.info("Generating documentation for '{}'...", api.getName());
     var start = System.currentTimeMillis();
 
-    var scanner = createControllerScanner(classLoader);
-    LOGGER.debug("Scanning location for controllers.");
-    var controllers =
-        api.getControllersLocations().stream()
-            .map(scanner::findControllers)
-            .flatMap(Collection::stream)
-            .collect(Collectors.toUnmodifiableSet());
-    LOGGER.debug("{} controllers were found", controllers.size());
+    var controllers = getControllers(api, classLoader);
+    var additionalModelResolvers = collectAdditionalModelResolvers(api);
+    var additionalProperties = getProperties(api);
 
-    var additionalModelResolvers = new ArrayList<ModelResolver>();
-    if (api.getDefaultJsonViewExclusion()) {
-      additionalModelResolvers.add(new JsonViewDefaultViewExclusionModelResolver());
-    }
-
-    LOGGER.debug("Building Spring application context");
+    LOGGER.debug("API {}. Building Spring application context", api.getName());
     var context =
         SpringDocContext.builder()
             .apiName(api.getName())
             .version(api.getVersion())
             .additionalModelResolvers(additionalModelResolvers)
             .classLoader(classLoader)
-            .additionalProperties(new Properties())
+            .additionalProperties(additionalProperties)
             .controllers(controllers)
-            .springDocProperties(new SpringDocConfigProperties())
             .build();
-    LOGGER.debug("SpringDoc application context built");
+    LOGGER.debug("API {}. SpringDoc application context built", api.getName());
 
-    var format = Documentation.As.JSON;
-    if (api.getFormat().equalsIgnoreCase("yaml")) {
-      format = Documentation.As.YAML;
-    }
-    LOGGER.debug("API {}. Documentation format is {}", api.getName(), format);
+    var format = resolveDocumenationFormat(api);
 
     var docs =
         SpringDocDocumentation.builder()
@@ -90,11 +71,9 @@ public class GenerateOpenApiDocumentationTask extends DefaultTask {
             .format(format)
             .build();
 
-    LOGGER.debug("Configuring storage");
+    LOGGER.debug("API {}. Configuring storage", api.getName());
 
-    var outputPath = getOutputPath(api);
-    LOGGER.debug("Output path: {}", outputPath);
-    var storage = FileDocumentationStorage.of(outputPath);
+    var storage = createDocumentationStorage(api);
 
     var swarz = Swarz.builder().docs(docs).storage(storage).build();
 
@@ -104,7 +83,51 @@ public class GenerateOpenApiDocumentationTask extends DefaultTask {
       throw new GradleException("Documentation generation failed", e);
     }
 
-    LOGGER.info("Generation complete in {}ms", System.currentTimeMillis() - start);
+    LOGGER.info(
+        "API {}. Generation complete in {}ms", api.getName(), System.currentTimeMillis() - start);
+  }
+
+  private Properties getProperties(ApiExtension api) {
+    LOGGER.debug("API {}. Adding additional properties: {}", api.getName(), api.getProperties());
+    var additionalProperties = new Properties();
+    additionalProperties.putAll(api.getProperties());
+    return additionalProperties;
+  }
+
+  private FileDocumentationStorage createDocumentationStorage(ApiExtension api) {
+    var outputPath = getOutputPath(api);
+    LOGGER.debug("API {}. Output path: {}", api.getName(), outputPath);
+    return FileDocumentationStorage.of(outputPath);
+  }
+
+  private Documentation.As resolveDocumenationFormat(ApiExtension api) {
+    var format = Documentation.As.JSON;
+    if (api.getFormat().equalsIgnoreCase("yaml")) {
+      format = Documentation.As.YAML;
+    }
+    LOGGER.debug("API {}. Documentation format is {}", api.getName(), format);
+    return format;
+  }
+
+  private ArrayList<ModelResolver> collectAdditionalModelResolvers(ApiExtension api) {
+    var additionalModelResolvers = new ArrayList<ModelResolver>();
+    if (api.isExcludeDefaultJsonViewFields()) {
+      LOGGER.debug("API {}, DEFAULT_VIEW_EXCLUSION enabled", api.getName());
+      additionalModelResolvers.add(new JsonViewDefaultViewExclusionModelResolver());
+    }
+    return additionalModelResolvers;
+  }
+
+  private Set<Class<?>> getControllers(ApiExtension api, ClassLoader classLoader) {
+    var scanner = createControllerScanner(classLoader);
+    LOGGER.debug("API {}. Scanning location for controllers.", api.getName());
+    var controllers =
+        api.getControllersLocations().stream()
+            .map(scanner::findControllers)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toUnmodifiableSet());
+    LOGGER.debug("API {}. {} controllers were found", api.getName(), controllers.size());
+    return controllers;
   }
 
   private CompositeControllerScanner createControllerScanner(ClassLoader classLoader) {

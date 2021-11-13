@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.webmvc.core.SpringDocWebMvcConfiguration;
+import org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration;
 import org.springframework.context.annotation.AnnotatedBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
@@ -50,7 +51,6 @@ public class SpringDocContext extends GenericWebApplicationContext
     @NotNull private ClassLoader classLoader;
     private final List<ModelResolver> additionalModelResolvers = new ArrayList<>();
     @NotNull private List<Class<?>> controllers;
-    @NotNull private SpringDocConfigProperties springDocProperties;
     @NotNull private Properties additionalProperties;
     @NotNull private String version;
     @NotNull private String apiName;
@@ -80,31 +80,28 @@ public class SpringDocContext extends GenericWebApplicationContext
       return this;
     }
 
-    public Builder springDocProperties(@NonNull SpringDocConfigProperties springDocProperties) {
-      this.springDocProperties = springDocProperties;
-      return this;
-    }
-
     public Builder additionalProperties(@NonNull Properties additionalProperties) {
       this.additionalProperties = additionalProperties;
       return this;
     }
 
     public SpringDocContext build() {
+      notNull(version, "version");
+      notNull(apiName, "API name");
       notNull(classLoader, "class loader");
       notNull(additionalModelResolvers, "additional model resolvers");
       notNull(controllers, "controllers");
-      notNull(springDocProperties, "springdoc properties");
       notNull(additionalProperties, "additional properties");
 
       var context = new SpringDocContext();
 
       context.setClassLoader(classLoader);
+      context.register(ConfigurationPropertiesAutoConfiguration.class);
       context.register(SpringDocWebMvcConfiguration.class);
       context.register(SpringDocConfiguration.class);
       context.registerBean(
           RequestMappingInfoHandlerMapping.class, requestMappingInfoHandlerMapping());
-      context.registerBean(SpringDocConfigProperties.class, () -> springDocProperties);
+      context.registerBean(SpringDocConfigProperties.class, SpringDocConfigProperties::new);
 
       log.debug("Customize OpenAPI with API name: {}, and API version: {}", apiName, version);
       context.registerBean(
