@@ -23,9 +23,16 @@ public class SpringDocDocumentation implements Documentation {
   @Override
   public @NonNull String get() throws RuntimeException {
     try {
-      return context
-          .getBean(OpenApiResource.class)
-          .openapiJson(new MockHttpServletRequest(), "test");
+      var apiResource = context.getBean(OpenApiResource.class);
+
+      switch (format) {
+        case JSON:
+          return apiResource.openapiJson(new MockHttpServletRequest(), "swarz");
+        case YAML:
+          return apiResource.openapiYaml(new MockHttpServletRequest(), "swarz");
+        default:
+          throw new IllegalArgumentException("Unexpected format: " + format);
+      }
     } catch (Exception e) {
       throw new RuntimeException("Unable to generate the OAS3 documentation", e);
     }

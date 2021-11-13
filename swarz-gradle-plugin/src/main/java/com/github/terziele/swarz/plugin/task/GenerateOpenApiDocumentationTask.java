@@ -77,11 +77,17 @@ public class GenerateOpenApiDocumentationTask extends DefaultTask {
             .build();
     LOGGER.debug("SpringDoc application context built");
 
+    var format = Documentation.As.JSON;
+    if (api.getFormat().equalsIgnoreCase("yaml")) {
+      format = Documentation.As.YAML;
+    }
+    LOGGER.debug("API {}. Documentation format is {}", api.getName(), format);
+
     var docs =
         SpringDocDocumentation.builder()
             .name(api.getName())
             .context(context)
-            .format(Documentation.As.JSON)
+            .format(format)
             .build();
 
     LOGGER.debug("Configuring storage");
