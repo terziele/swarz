@@ -1,6 +1,7 @@
 plugins {
 	id 'java-library'
 	id 'maven-publish'
+	id 'signing'
 }
 
 repositories {
@@ -12,6 +13,43 @@ java {
 	withSourcesJar()
 }
 
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			groupId = project.group
+			artifactId = project.name
+			version = project.version
+			from components.java
+			pom {
+				name = project.name
+				description = 'Swarz. Static OpenAPI generator. ' + project.name
+				url = 'https://github.com/terziele/swarz'
+				licenses {
+					license {
+						name = 'MIT License'
+						url = 'https://github.com/terziele/swarz/blob/master/LICENSE'
+					}
+				}
+				developers {
+					developer {
+						id = 'terziele'
+						name = 'Ihnat Aŭtuška'
+						email = 'autushka.ihnat@gmail.com'
+					}
+				}
+				scm {
+					connection = 'scm:git:git://github.com/terziele/swarz.git'
+					developerConnection = 'scm:git:ssh://github.com/terziele/swarz.git'
+					url = 'https://github.com/terziele/swarz'
+				}
+			}
+		}
+	}
+}
+
+signing {
+	sign publishing.publications.mavenJava
+}
 
 dependencies {
 	annotationProcessor "org.projectlombok:lombok:1.18.20"
