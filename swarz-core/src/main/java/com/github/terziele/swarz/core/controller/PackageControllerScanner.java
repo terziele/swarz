@@ -26,7 +26,6 @@ public class PackageControllerScanner extends AbstractControllerScanner {
   /**
    * @param source package name
    * @return found controllers in package or empty set.
-   * @inheritDoc
    */
   @Override
   public @NonNull Set<Class<?>> findControllers(@NonNull String source) {

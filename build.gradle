@@ -6,10 +6,11 @@ plugins {
     id 'jacoco'
     id "com.diffplug.spotless" version "5.12.5"
     id 'maven-publish'
+    id "io.github.gradle-nexus.publish-plugin" version "1.1.0"
 }
 
 allprojects {
-    group 'com.github.terziele.swarz'
+    group 'io.github.terziele.swarz'
     version '0.2.0-SNAPSHOT'
 }
 
@@ -43,20 +44,6 @@ configure(subprojects) {
         mavenCentral()
     }
 
-
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                groupId = project.group
-                artifactId = project.name
-                version = project.version
-
-                from components.java
-            }
-        }
-    }
-
-
     spotless {
         java {
             googleJavaFormat()
@@ -66,5 +53,54 @@ configure(subprojects) {
             greclipse()
             target '*.gradle' // default target for kotlinGradle
         }
+    }
+}
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl = uri("https://s01.oss.sonatype.org/service/local/")
+            snapshotRepositoryUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+
+        }
+    }
+}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+            from components.java
+            pom {
+                name = 'Swarz'
+                description = 'Swarz. Static OpenAPI generator'
+                url = 'https://github.com/terziele/swarz'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://github.com/terziele/swarz/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'terziele'
+                        name = 'Ihnat Aŭtuška'
+                        email = 'autushka.ihnat@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/terziele/swarz.git'
+                    developerConnection = 'scm:git:ssh://github.com/terziele/swarz.git'
+                    url = 'https://github.com/terziele/swarz'
+                }
+            }
+        }
+    }
+
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
     }
 }

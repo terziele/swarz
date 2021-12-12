@@ -38,7 +38,7 @@ pluginBundle {
 	}
 
 	mavenCoordinates {
-		groupId = "com.github.terziele"
+		groupId = "io.github.terziele"
 		artifactId = "swarz-openapi-plugin"
 		version = project.version
 	}

@@ -7,6 +7,12 @@ repositories {
 	mavenCentral()
 }
 
+java {
+	withJavadocJar()
+	withSourcesJar()
+}
+
+
 dependencies {
 	annotationProcessor "org.projectlombok:lombok:1.18.20"
 	compileOnly "org.projectlombok:lombok:1.18.20"
