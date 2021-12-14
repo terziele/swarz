@@ -12,8 +12,8 @@ repositories {
 gradlePlugin {
 	plugins {
 		swarzOpenApiPlugin {
-			id = "com.github.terziele.swarz-openapi-plugin"
-			implementationClass = 'com.github.terziele.swarz.plugin.SwarzOpenApiPlugin'
+			id = "io.github.terziele.swarz-openapi-plugin"
+			implementationClass = 'io.github.terziele.swarz.plugin.SwarzOpenApiPlugin'
 			description = "Swarz. OpenAPI 3 documentation generator plugin"
 		}
 	}

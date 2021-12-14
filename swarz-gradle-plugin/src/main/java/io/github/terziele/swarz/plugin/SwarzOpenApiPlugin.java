@@ -1,8 +1,8 @@
 /* (C)2021 */
-package com.github.terziele.swarz.plugin;
+package io.github.terziele.swarz.plugin;
 
-import com.github.terziele.swarz.plugin.extensions.SwarzExtension;
-import com.github.terziele.swarz.plugin.task.GenerateOpenApiDocumentationTask;
+import io.github.terziele.swarz.plugin.extensions.SwarzExtension;
+import io.github.terziele.swarz.plugin.task.GenerateOpenApiDocumentationTask;
 import java.util.Map;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -17,7 +17,7 @@ public class SwarzOpenApiPlugin implements Plugin<Project> {
             "type", GenerateOpenApiDocumentationTask.class,
             "dependsOn", "classes",
             "group", "documentation",
-            "description", "Generate OpenAPI3 documentation");
+            "description", "Generate OpenAPI 3 documentation");
 
     project.task(taskConfig, "openApiDocumentation");
   }

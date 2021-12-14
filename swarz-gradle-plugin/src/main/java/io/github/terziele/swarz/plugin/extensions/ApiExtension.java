@@ -1,5 +1,5 @@
 /* (C)2021 */
-package com.github.terziele.swarz.plugin.extensions;
+package io.github.terziele.swarz.plugin.extensions;
 
 import java.util.HashMap;
 import java.util.HashSet;

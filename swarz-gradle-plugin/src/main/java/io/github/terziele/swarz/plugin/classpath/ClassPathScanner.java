@@ -1,5 +1,5 @@
 /* (C)2021 */
-package com.github.terziele.swarz.plugin.classpath;
+package io.github.terziele.swarz.plugin.classpath;
 
 import java.io.File;
 import java.net.MalformedURLException;
